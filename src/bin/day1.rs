@@ -16,14 +16,14 @@ fn read_data() -> [Vec<i64>; 2] {
             right.push(right_num);
         }
     }
-    return [left, right];
+    [left, right]
 }
 
 fn part1() -> i64 {
     let [mut left, mut right] = read_data();
     left.sort();
     right.sort();
-    zip(left.into_iter(), right.into_iter())
+    zip(left, right)
         .map(|(l, r)| (l - r).abs())
         .sum()
 }

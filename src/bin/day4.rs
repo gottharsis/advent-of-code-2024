@@ -67,7 +67,7 @@ where
             return None;
         }
         let (r, c) = *loc;
-        return Some(self.0[r][c]);
+        Some(self.0[r][c])
     }
 }
 
@@ -75,9 +75,7 @@ fn check_add(loc: Loc, delta: (i32, i32)) -> Option<Loc> {
     let (r, c) = loc;
     let (dr, dc) = delta;
 
-    if r == 0 && dr < 0 {
-        None
-    } else if c == 0 && dc < 0 {
+    if (r == 0 && dr < 0)  || (c == 0 && dc < 0){
         None
     } else {
         let nr = ((r as i32) + dr) as usize;

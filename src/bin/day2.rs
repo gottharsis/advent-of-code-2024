@@ -17,13 +17,13 @@ fn read_data() -> Vec<Vec<i64>> {
 fn is_valid_level(prev: i64, next: i64, is_increasing: bool) -> bool {
     let diff = next - prev;
     if is_increasing {
-        diff >= 1 && diff <= 3
+        (1..=3).contains(&diff)
     } else {
-        diff <= -1 && diff >= -3
+        (-3..=-1).contains(&diff)
     }
 }
 
-fn is_safe_report(report: &Vec<i64>) -> bool {
+fn is_safe_report(report: &[i64]) -> bool {
     if report.len() < 2 {
         return true;
     }
@@ -35,10 +35,10 @@ fn is_safe_report(report: &Vec<i64>) -> bool {
 }
 
 fn part1() -> usize {
-    read_data().into_iter().filter(is_safe_report).count()
+    read_data().into_iter().filter(|report| is_safe_report(report)).count()
 }
 
-fn is_safe_with_deletion(report: &Vec<i64>) -> bool {
+fn is_safe_with_deletion(report: &[i64]) -> bool {
     if report.len() < 2 {
         return true;
     }
@@ -46,7 +46,7 @@ fn is_safe_with_deletion(report: &Vec<i64>) -> bool {
     // if the first element is wrong
     (0..report.len()).any(|excluded_idx| {
         let excluded = report.iter().copied().enumerate()
-            .filter_map(|(idx, val)| { if idx ==  excluded_idx { None } else { Some(val) } }).collect();
+            .filter_map(|(idx, val)| { if idx ==  excluded_idx { None } else { Some(val) } }).collect::<Vec<_>>();
         is_safe_report(&excluded)
     })
 }
@@ -54,7 +54,7 @@ fn is_safe_with_deletion(report: &Vec<i64>) -> bool {
 fn part2() -> usize {
     read_data()
         .into_iter()
-        .filter(is_safe_with_deletion)
+        .filter(|v|is_safe_with_deletion(v))
         .count()
 }
 
