@@ -1,6 +1,7 @@
 
 pub struct Grid<T>(pub Vec<Vec<T>>);
 pub type Loc = (usize, usize);
+use std::ops::{Index, IndexMut};
 
 impl<T> Grid<T> {
     pub fn n_rows(&self) -> usize {
@@ -60,9 +61,32 @@ impl<T> Grid<T> {
     }
 }
 
+impl<T> Index <&Loc> for Grid<T> {
+    type Output = T;
+
+    fn index(&self, index: &Loc) -> &Self::Output {
+        let (r, c) = *index;
+        &self.0[r][c]
+    }
+}
+
+impl <T>IndexMut<&Loc> for Grid <T>{
+    fn index_mut(&mut self, index: &Loc) -> &mut Self::Output {
+        let (r, c) = *index; 
+        &mut self.0[r][c]
+    }
+}
+
+impl <T> Grid<T> 
+    where T: Copy {
+    pub fn new(n_rows: usize, n_cols: usize, value: T) -> Self {
+        Grid((0..n_rows).map(|_| (0..n_cols).map(|_| value).collect()).collect())
+    }
+}
+
 impl Grid<char> {
-    pub fn from_string(s: &str) -> Grid<char> {
-        Grid(s.lines().map(|line| line.chars().collect()).collect())
+    pub fn from_string(s: &str) -> Self {
+        Grid(s.trim().lines().map(|line| line.chars().collect()).collect())
     }
 }
 
