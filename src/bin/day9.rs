@@ -108,27 +108,29 @@ fn part2() -> u64 {
     let mut queue = VecDeque::from(read_input());
     let mut checksum = 0u64;
     let mut i = 0u64;
+    let mut n_consecutive_spaces = 0u64;
 
     while !queue.is_empty() {
         let entry = queue.pop_front().unwrap();
         match entry {
             FileType::File(File{id, size}) =>{
+                i += n_consecutive_spaces;
+                n_consecutive_spaces = 0;
             for _ in 0..size {
                     checksum += id * i;
                     i += 1;
                 }
         }
             FileType::Space(n_blocks) => {
-                if let Some(file) = try_move_file_from_end(&mut queue, n_blocks) {
-                    let remaining_space = n_blocks - file.size;
+                n_consecutive_spaces += n_blocks;
+                if let Some(file) = try_move_file_from_end(&mut queue, n_consecutive_spaces) {
+                    let remaining_space = n_consecutive_spaces - file.size;
+                    n_consecutive_spaces = 0;
                     if remaining_space > 0 {
                         queue.push_front(FileType::Space(remaining_space));
                     }
                     queue.push_front(FileType::File(file));
-                } else {
-                    i += n_blocks;
-                }
-            }
+                }             }
         }
     }
 

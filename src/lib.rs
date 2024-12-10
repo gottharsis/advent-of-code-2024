@@ -59,6 +59,40 @@ impl<T> Grid<T> {
         }
         Some(new_pos)
     }
+
+    pub fn iter_with_loc(&self) -> GridIterWithLoc<'_, T> {
+        GridIterWithLoc::new(self)
+    }
+}
+
+pub struct GridIterWithLoc<'a, T> {
+    grid: &'a Grid<T>,
+    r: usize,
+    c: usize,
+}
+
+impl <'a, T> GridIterWithLoc<'a, T> {
+    fn new(grid: &'a Grid<T>) -> Self {
+        GridIterWithLoc{grid, r: 0, c: 0}
+    }
+}
+
+impl <'a, T> Iterator for GridIterWithLoc<'a, T> {
+    type Item = (Loc, &'a T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.r == self.grid.n_rows() {
+            return None;
+        }
+        let idx = (self.r, self.c);
+        let item = &self.grid[&idx];
+        self.c += 1;
+        if self.c == self.grid.n_cols() {
+            self.c = 0;
+            self.r += 1;
+        }
+        Some((idx, item))
+    }
 }
 
 impl<T> Index <&Loc> for Grid<T> {
@@ -90,7 +124,7 @@ impl Grid<char> {
     }
 }
 
-#[derive(Copy, Clone, PartialEq, Hash, Eq)]
+#[derive(Copy, Clone, PartialEq, Hash, Eq, Debug)]
 pub enum Dir {
     N,
     NE,
