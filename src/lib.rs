@@ -1,3 +1,7 @@
+mod lib {
+    pub mod vec2;
+}
+pub use lib::vec2;
 
 pub struct Grid<T>(pub Vec<Vec<T>>);
 pub type Loc = (usize, usize);
@@ -115,6 +119,14 @@ impl <T> Grid<T>
     where T: Copy {
     pub fn new(n_rows: usize, n_cols: usize, value: T) -> Self {
         Grid((0..n_rows).map(|_| (0..n_cols).map(|_| value).collect()).collect())
+    }
+
+    pub fn set_all(&mut self, val: T) {
+        for i in 0..self.n_rows() {
+            for j in 0..self.n_cols() {
+                self.0[i][j] = val
+            }
+        }
     }
 }
 
