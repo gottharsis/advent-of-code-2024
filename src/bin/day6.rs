@@ -16,7 +16,7 @@ fn next_guard_position(grid: &Grid<char>, pos: &Loc, mut facing: Dir) -> Option<
                 }
             }
         }
-        facing = Dir::rotate_clockwise(&facing);
+        facing = facing.rotate_clockwise();
     }
     Some((*pos, facing))
 }

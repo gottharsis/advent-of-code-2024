@@ -170,9 +170,9 @@ impl Dir {
         }
     }
 
-    pub fn rotate_clockwise(dir: &Dir) -> Dir {
+    pub fn rotate_clockwise(&self) -> Self {
         use Dir::*;
-        match dir {
+        match self {
             N => E,
             NE => SE,
             E => S,
@@ -181,6 +181,20 @@ impl Dir {
             SW => NW,
             W => N,
             NW => NE
+        }
+    }
+
+    pub fn rotate_counterclockwise(&self) -> Self {
+        use Dir::*;
+        match self {
+            E => N,
+            SE => NE,
+            S => E,
+            SW => SE,
+            W => S,
+            NW => SW,
+            N => W,
+            NE => NW
         }
     }
 }
