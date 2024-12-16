@@ -69,6 +69,13 @@ impl<T> Grid<T> {
     }
 }
 
+impl<T> Grid<T> where T: Eq {
+    pub fn find_item(&self, needle: &T) -> Option<Loc> {
+        self.iter_with_loc().filter_map(|(loc, val)| if val == needle { Some(loc) } else {None})
+        .next()
+    }
+}
+
 pub struct GridIterWithLoc<'a, T> {
     grid: &'a Grid<T>,
     r: usize,
