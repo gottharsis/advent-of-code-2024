@@ -1,6 +1,5 @@
-use advent_of_code_2024::{vec2::Vec2, Grid};
-use itertools::Itertools;
-use std::{fs::read_to_string, ops::Mul};
+use advent_of_code_2024::{Grid, Vec2};
+use std::fs::read_to_string;
 
 type Num = i32;
 
@@ -83,8 +82,18 @@ fn part2() -> i32 {
         shape.set_all('.');
         robots.iter_mut().for_each(|robot| {
             robot.step_inplace(1);
-            let c = robot.position.x.rem_euclid(101).try_into().expect("Invalid index");
-            let r = robot.position.y.rem_euclid(103).try_into().expect("Invalid index");
+            let c = robot
+                .position
+                .x
+                .rem_euclid(101)
+                .try_into()
+                .expect("Invalid index");
+            let r = robot
+                .position
+                .y
+                .rem_euclid(103)
+                .try_into()
+                .expect("Invalid index");
             shape[&(r, c)] = '*';
         });
 

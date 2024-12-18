@@ -1,6 +1,5 @@
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::mem::swap;
 use std::{collections::HashSet, fs::read_to_string};
 
 use advent_of_code_2024::{Grid, Loc};
