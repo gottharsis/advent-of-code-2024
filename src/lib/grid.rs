@@ -62,6 +62,31 @@ impl<T> Grid<T> {
         Some(new_pos)
     }
 
+    pub fn step_n<N: Into<usize>>(&self, loc: &Loc, direction: Dir, step_count: N) -> Option<Loc> {
+        let (r, c) = *loc;
+        let r = r as isize;
+        let c = c as isize;
+        let (dr, dc) = direction.delta();
+        let dr = dr as isize;
+        let dc = dc as isize;
+
+        let step_count: isize = step_count.into().try_into().ok()?;
+        let nr: isize = r + step_count * dr;
+        let nc: isize = c + step_count * dc;
+        if nr < 0
+            || nr >= self.n_rows().try_into().unwrap()
+            || nc < 0
+            || nc >= self.n_cols().try_into().unwrap()
+        {
+            return None;
+        }
+        Some((nr as usize, nc as usize))
+    }
+
+    pub fn step_get(&self, loc: &Loc, direction: Dir) -> Option<&T> {
+        self.step(loc, direction).map(|l| &self[&l])
+    }
+
     pub fn iter_with_loc(&self) -> GridIterWithLoc<'_, T> {
         GridIterWithLoc::new(self)
     }

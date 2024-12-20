@@ -52,4 +52,18 @@ impl Dir {
             NE => NW,
         }
     }
+
+    pub fn opposite(&self) -> Self {
+        use Dir::*;
+        match self {
+            N => S,
+            NE => SW,
+            E => W,
+            SE => NW,
+            S => N,
+            SW => NE,
+            W => E,
+            NW => SE,
+        }
+    }
 }
