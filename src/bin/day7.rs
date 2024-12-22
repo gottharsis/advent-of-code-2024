@@ -73,7 +73,7 @@ impl Op {
 
 // switch to recursive backtracking
 fn can_make_target(target: u64, nums: &Vec<u64>) -> bool {
-    return can_make_target_helper(target, nums, nums[0], 1);
+    can_make_target_helper(target, nums, nums[0], 1)
 }
 
 fn can_make_target_helper(target: u64, nums: &Vec<u64>, partial_result: u64, idx: usize) -> bool {

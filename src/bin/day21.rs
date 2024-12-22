@@ -1,4 +1,4 @@
-use advent_of_code_2024::{Dir, Grid, Loc, Vec2};
+use advent_of_code_2024::{Grid, Loc};
 use itertools::{iproduct, repeat_n, Itertools};
 use std::cmp::min;
 use std::collections::{HashMap, VecDeque};
@@ -13,29 +13,6 @@ fn read_input() -> Vec<String> {
         .collect()
 }
 
-fn simulate(keypad: &Grid<char>, start: Loc, sequence: &[char]) -> Option<Vec<char>> {
-    let mut output = Vec::new();
-    let (mut r, mut c) = start;
-    for ch in sequence {
-        match *ch {
-            '^' => r = r.checked_sub(1)?,
-            'v' => r += 1,
-            '<' => c = c.checked_sub(1)?,
-            '>' => c += 1,
-            'A' => (),
-            _ => return None,
-        }
-        match keypad.at(&(r, c)) {
-            Some(ch) if *ch != '.' => (),
-            _ => return None,
-        }
-        if *ch == 'A' {
-            output.push(*keypad.at(&(r, c))?);
-        }
-    }
-    Some(output)
-}
-
 fn numeric_keypad() -> &'static Grid<char> {
     static NUMERIC_KEYPAD_CELL: OnceLock<Grid<char>> = OnceLock::new();
     NUMERIC_KEYPAD_CELL.get_or_init(|| Grid::from_string("789\n456\n123\n.0A"))
@@ -48,18 +25,6 @@ fn directional_keypad() -> &'static Grid<char> {
 
 const NUMERIC_START: (usize, usize) = (3, 2);
 const DIRECTIONAL_START: (usize, usize) = (0, 2);
-
-fn simulate_all_p1(sequence: &[char]) -> Option<Vec<char>> {
-    simulate(directional_keypad(), DIRECTIONAL_START, sequence)
-        .and_then(|r1| {
-            println!("R1: {:?}", r1.iter().collect::<String>());
-            simulate(directional_keypad(), DIRECTIONAL_START, &r1)
-        })
-        .and_then(|r2| {
-            println!("R2: {:?}", r2.iter().collect::<String>());
-            simulate(numeric_keypad(), NUMERIC_START, &r2)
-        })
-}
 
 // get the changes that it would take to print
 fn simulate_reverse_single_layer(
