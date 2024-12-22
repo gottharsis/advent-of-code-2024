@@ -142,3 +142,5 @@ where
         }
     }
 }
+
+const UP: Vec2<isize> = Vec2 { x: -1, y: 0 };
