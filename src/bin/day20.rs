@@ -1,11 +1,6 @@
-use std::{
-    cmp::min,
-    collections::{HashMap, HashSet, VecDeque},
-    fs::read_to_string,
-};
+use std::fs::read_to_string;
 
 use advent_of_code_2024::{manhattan_distance, Dir, Grid, Loc};
-use itertools::iproduct;
 
 fn read_input() -> Grid<char> {
     Grid::from_string(&read_to_string("input/day20.txt").unwrap())
